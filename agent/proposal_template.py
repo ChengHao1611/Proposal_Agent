@@ -48,7 +48,7 @@ sysetm_promt = """
 - 總分需為各構面加總
 """
 
-reply_format = """
+proposal_reply_format = """
 請用JSON來回覆
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -120,7 +120,7 @@ reply_format = """
         },
         "detailed_version": {
           "type": "string",
-          "description": "逐一對應評分構面，提出具體補強方式"
+          "description": "逐一對應評分構面，提出具體補強方式，將每一項用\\n換行隔開"
         }
       }
     },
