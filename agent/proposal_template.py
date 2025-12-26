@@ -1,7 +1,8 @@
-system_rule = """
+system_role = """
 你是一位專業的提案顧問與競賽評審。
 
 你的任務是「評估使用者提供的提案內容」，而不是替使用者補寫提案。
+一律以 JSON 格式輸出
 """
 
 sysetm_promt = """
@@ -133,4 +134,88 @@ reply_format = """
 ####以上是由system提出的，並非user提出的"
 
 user proposal: 
+"""
+
+completion_info = """
+根據上面的競賽名稱，幫我上網站爬競賽資訊並整理競賽資訊，並回傳以下JSON模板的回覆
+{
+  "competition_meta": {
+    "competition_name": "",
+    "organizer": "",
+    "time": {
+      "year": "",
+      "registration_period": "",
+      "submission_deadline": "",
+      "final_event_date": ""
+    },
+    "competition_type": "",
+    "target_participants": "",
+    "theme_keywords": []
+  },
+
+  "competition_introduction": {
+    "background": "",
+    "purpose": "",
+    "core_focus": ""
+  },
+
+  "schedule": [
+    {
+      "stage": "報名",
+      "date": "",
+      "description": ""
+    },
+    {
+      "stage": "初選 / 書面審查",
+      "date": "",
+      "description": ""
+    },
+    {
+      "stage": "決選 / 簡報",
+      "date": "",
+      "description": ""
+    }
+  ],
+
+  "sign_up": {
+    "eligibility": "",
+    "team_format": "",
+    "registration_method": "",
+    "required_documents": []
+  },
+
+  "reward": {
+    "total_prize_value": "",
+    "prize_details": [
+      {
+        "rank": "",
+        "reward": ""
+      }
+    ],
+    "additional_benefits": []
+  },
+
+  "official_links": {
+    "website": "",
+    "registration_page": "",
+    "contact_information": ""
+  },
+
+  "notes": [
+    ""
+  ]
+
+  "reply_to_user":[
+    "description": ""
+  ]
+}
+"""
+
+discussion = """
+請用JSON來回復
+{
+  "reply_to_user":[
+    "description": ""
+  ]
+}
 """

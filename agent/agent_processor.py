@@ -1,4 +1,10 @@
 from . import proposal_template as pt
+from ollamaLLM import send_messages_to_LLM
+
+messages = [{
+    "role": "system",
+    "content": pt.system_role
+}]
 
 def  send_message_to_agent(user_name: str, user_message: str, mode: int) -> str:
     """
@@ -17,17 +23,17 @@ def  send_message_to_agent(user_name: str, user_message: str, mode: int) -> str:
     """
     if mode == 1:
         #clear_user_message_history(user_name)
-        #implement get_user_message_history(user_name: str, role: str) -> str(user_message_history):
+        #get_user_message_history(user_name: str, role: str) -> str(user_message_history):
         print(f"找到{user_message}競賽")
-        result_message = f"找到{user_message}競賽" + pt.system_rule
+        result_message = f"{user_message}" + pt.completion_info
+        messages.append({"role" : "user", "content": result_message})
+        print(send_messages_to_LLM(messages))
     elif mode == 2:
-        #implement get_user_message_history(user_name: str, role: str) -> str(user_message_history):
-        # 新增模板
-        # 傳給LLM
-        # 接收LLM結果
-        # 在database 紀錄
-        print("LLM回傳的結果")
-        result_message = "LLM回傳的結果"
+        #get_user_message_history(user_name: str, role: str) -> str(user_message_history):
+        result_message = f"{user_message}" + pt.discussion
+        messages.append({"role" : "user", "content": result_message})
+        print(send_messages_to_LLM(messages))
+        #set_user_message_history(user_name: str, role: str, message: str):
     elif mode == 3:
         #implement get_user_message_history(user_name: str, role: str) -> str(user_message_history):
         # 新增模板
@@ -44,7 +50,5 @@ def  send_message_to_agent(user_name: str, user_message: str, mode: int) -> str:
         # 在database 紀錄
         print("LLM回傳提案評分")
         result_message = "LLM回傳提案評分"
-        
-
 
     return result_message
