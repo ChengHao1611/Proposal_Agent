@@ -2,6 +2,9 @@ import os
 from ollama import Client
 import json
 import re
+import logging
+
+logger = logging.getLogger(__name__)
 
 def send_messages_to_LLM(messages: list[dict[str, str]]) -> dict:
     """
@@ -19,6 +22,7 @@ def send_messages_to_LLM(messages: list[dict[str, str]]) -> dict:
     )
     #str(os.environ.get("OLLAMA_API_KEY"))
 
+    logger.info("等待ollma回應")
     print("等待ollma回應")
     try:
         for part in client.chat('gpt-oss:120b', messages=messages, stream=False):
@@ -54,8 +58,10 @@ def error_process(e: Exception) -> str:
                         detail = m.group(1)
 
     if detail == "Invalid API Key" or (detail is None and "Invalid API Key" in str(e)):
+        logger.warning("LLM的API錯誤")
         return "Invalid API Key detected. Please set the OLLAMA_API_KEY environment variable."
     else:
+        logger.exception("LLM接收/回覆出現問題")
         return ("Error:", detail or str(e))
 
 

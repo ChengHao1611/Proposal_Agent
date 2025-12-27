@@ -201,14 +201,14 @@ completion_info = """
     ""
   ]
 
-  "reply_to_user": "口語化回覆"
+  "reply_to_user": "" ##口語化回覆給使用者
 }
 """
 
 discussion = """
-請用JSON來回復
+請用JSON來覆
 {
-  "reply_to_user": "口語化回覆"
+  "reply_to_user": "" ##口語化回覆給使用者
 }
 """
 
@@ -216,7 +216,7 @@ proposal_integrated_template = """
 請用JSON來回復，根據評分細項來整理message中role是user的content，將user的content整理成一份完整的提案
 若該細項user沒有說明則跳過也不用顯示給user，只整理role == user 提供的內容，不要將assiant的內容加進去
 {
-  "reply_to_user": "口語化回覆
+  "reply_to_user": "
 要解決的痛點或未被滿足的需求:
 受影響的目標對象是: 
 痛點會對目標對象造成實際影響:
@@ -237,6 +237,6 @@ proposal_integrated_template = """
 
 收入來源或獲利方式:
 主要成本結構:
-價值如何傳遞給客戶，以及使用的通路:"
-}
+價值如何傳遞給客戶，以及使用的通路:" ##口語化回覆給使用者
+} 
 """

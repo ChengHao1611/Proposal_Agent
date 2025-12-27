@@ -1,5 +1,9 @@
 from . import proposal_template as pt
 from ollamaLLM import send_messages_to_LLM
+from agent.crawl_web_page import fetch_page_text
+import logging
+
+logger = logging.getLogger(__name__)
 
 messages = [{
     "role": "system",
@@ -61,7 +65,7 @@ messages = [{
 
 
 
-def  send_message_to_agent(user_name: str, user_message: str, mode: int) -> str:
+def send_message_to_agent(user_name: str, user_message: str, mode: int) -> str:
     """
     使用者傳入提案內容，並選擇想要的模式，根據所選的模式進行處理後，傳LLM回覆的訊息
 
@@ -82,7 +86,12 @@ def  send_message_to_agent(user_name: str, user_message: str, mode: int) -> str:
         print(f"找到{user_message}競賽")
         result_message = f"{user_message}" + pt.completion_info
         messages.append({"role" : "user", "content": result_message})
-        print(send_messages_to_LLM(messages))
+        try:
+            result_message = fetch_page_text(user_message)
+        except Exception as e:
+            logger.warning("爬網站失敗")
+            print(e)
+        #print(send_messages_to_LLM(messages))
     elif mode == 2:
         #get_user_message_history(user_name: str, role: str) -> str(user_message_history):
         result_message = f"{user_message}" + pt.discussion

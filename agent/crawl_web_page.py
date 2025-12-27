@@ -3,9 +3,11 @@ import re
 import socket
 import ipaddress
 from urllib.parse import urlparse
-
 import requests
 from bs4 import BeautifulSoup
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class FetchError(Exception):
@@ -142,4 +144,5 @@ if __name__ == "__main__":
         #print(search_competition_with_serpapi("創見南方"))
         print(fetch_page_text("https://ilink.web2.ncku.edu.tw/p/404-1252-217061.php?Lang=zh-tw"))
     except Exception as e:
+        logger.warning("爬尋網站失敗")
         print(e)
