@@ -11,8 +11,15 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
-competition_name = ''
-mode = -1
+user_states = {}
+
+def get_user_state(user_id):
+    if user_id not in user_states:
+        user_states[user_id] = {
+            'competition_name': '',
+            'mode': -1
+        }
+    return user_states[user_id]
 
 # verify token
 @app.route("/callback", methods=['POST'])
@@ -36,11 +43,14 @@ def handle_follow(event):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
+    user_state = get_user_state(user_id)
+    competition_name = user_state['competition_name']
+    mode = user_state['mode']
     user_message = event.message.text
     if mode == -1: # waiting for mode selection
         if user_message == '1': # input competition name
-            mode = 1
-            competition_name = ''
+            user_state['mode'] = 1
+            user_state['competition_name'] = ''
         elif user_message == '2': # discuss proposal
             if competition_name == '':
                 line_bot_api.reply_message(
@@ -49,7 +59,7 @@ def handle_message(event):
                 )
                 return
             else:
-                mode = 2
+                user_state['mode'] = 2
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text='如果想要停止討論，請輸入end') # 回應訊息
@@ -62,17 +72,17 @@ def handle_message(event):
                 )
                 return
             else:
-                mode = 3
+                user_state['mode'] = 3
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text='正在整理提案內容，請稍候...')
                 )
-                result = send_message_to_agent(user_id, event.message.text, mode)
+                result = send_message_to_agent(user_id, event.message.text, user_state['mode'])
                 line_bot_api.push_message(
                     user_id,
                     TextSendMessage(text=result) # 回應訊息
                 )
-                mode = -1
+                user_state['mode'] = -1
                 line_bot_api.push_message(
                     user_id,
                     TextSendMessage(text='請選擇您想要使用的功能\n1. 輸入競賽名稱\n2. 與LLM討論提案內容\n3. 由LLM整理提案\n4. 輸入提案內容\n')
@@ -85,7 +95,7 @@ def handle_message(event):
                 )
                 return
             else:
-                mode = 4
+                user_state['mode'] = 4
         else:
             line_bot_api.reply_message(
                 event.reply_token,
@@ -98,7 +108,7 @@ def handle_message(event):
             )
     elif mode == 2:
         if user_message == 'end':
-            mode = -1
+            user_state['mode'] = -1
             line_bot_api.push_message(
                 user_id,
                 TextSendMessage(text='請選擇您想要使用的功能\n1. 輸入競賽名稱\n2. 與LLM討論提案內容\n3. 由LLM整理提案\n4. 輸入提案內容\n')
@@ -108,23 +118,23 @@ def handle_message(event):
                 event.reply_token,
                 TextSendMessage(text='正在等待LLM回應，請稍候...')
             )
-            result = send_message_to_agent(user_id, event.message.text, mode)
+            result = send_message_to_agent(user_id, event.message.text, user_state['mode'])
             line_bot_api.push_message(
                 user_id,
                 TextSendMessage(text=result) # 回應訊息
             )
     elif mode == 1:
-        competition_name = user_message
+        user_state['competition_name'] = user_message
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='正在整理比賽資訊，請稍候...')
         )
-        result = send_message_to_agent(user_id, competition_name, mode)
+        result = send_message_to_agent(user_id, user_state['competition_name'], user_state['mode'])
         line_bot_api.push_message(
             user_id,
             TextSendMessage(text=result) # 回應訊息
         )
-        mode = -1
+        user_state['mode'] = -1
         line_bot_api.push_message(
             user_id,
             TextSendMessage(text='請選擇您想要使用的功能\n1. 輸入競賽名稱\n2. 與LLM討論提案內容\n3. 由LLM整理提案\n4. 輸入提案內容\n')
@@ -134,12 +144,12 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text='正在等待LLM評分與建議，請稍候...')
         )
-        result = send_message_to_agent(user_id, event.message.text, mode)
+        result = send_message_to_agent(user_id, event.message.text, user_state['mode'])
         line_bot_api.push_message(
             user_id,
             TextSendMessage(text=result) # 回應訊息
         )
-        mode = -1
+        user_state['mode'] = -1
         line_bot_api.push_message(
             user_id,
             TextSendMessage(text='請選擇您想要使用的功能\n1. 輸入競賽名稱\n2. 與LLM討論提案內容\n3. 由LLM整理提案\n4. 輸入提案內容\n')
