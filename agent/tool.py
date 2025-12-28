@@ -73,6 +73,29 @@ def initialize_user_history(user_name: str):
 
 
 class Tool:
+    @staticmethod
+    def LLM_choose_tool(user_name: str, user_message: str) -> str:
+        try:
+            messages = [{"role": "user", "content": pt.LLM_choose_template + user_message}]
+            response = send_messages_to_LLM(messages)
+            print(response)
+            #tool = (response["tool"])
+            #input_word = response["input_word"]
+            if tool == "find_completion":
+                return Tool.find_completion(user_name, input_word)
+            elif tool == "discuss_proposal":
+                return Tool.discuss_proposal(user_name, input_word)
+            elif tool == "organize_proposal":
+                return Tool.organize_proposal(user_name, input_word)
+            elif tool == "score_proposal":
+                return Tool.score_proposal(user_name, input_word)
+            return "錯誤工具"
+        except Exception as e:
+            logger.warning("LLM_choose_tool出現問題")
+            print(e)
+            return "出現莫名錯誤"
+
+    @staticmethod
     def find_completion(user_name: str, user_message: str) -> str:
         try:
             initialize_user_history(user_name)
@@ -90,6 +113,7 @@ class Tool:
             print(e)
             return "出現莫名錯誤"
 
+    @staticmethod
     def discuss_proposal(user_name: str, user_message: str) -> str:
         try:
             messages = get_user_message_history(user_name)
@@ -105,6 +129,7 @@ class Tool:
             print(e)
             return "出現莫名錯誤"
 
+    @staticmethod
     def organize_proposal(user_name: str, user_message: str) -> str:
         try:
             messages = get_user_message_history(user_name)

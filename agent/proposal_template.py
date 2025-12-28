@@ -213,7 +213,7 @@ completion_info = """
 """
 
 discussion = """
-請用JSON來覆
+請用JSON來回覆，分析優缺點
 {
   "reply_to_user": "" ##口語化回覆給使用者
 }
@@ -247,4 +247,25 @@ proposal_integrated_template = """
 主要成本結構:
 價值如何傳遞給客戶，以及使用的通路:" ##口語化回覆給使用者
 } 
+"""
+
+LLM_choose_template = """
+輸入使用者的訊息，決定要使用哪一個工具，現在有4個tool可以選擇
+tool: 
+1. "find_completion": 輸入他要尋找的競賽名稱，這個tool會根據競賽名稱去爬相關文字
+2. "discuss_proposal": 和LLM討論提案內容要如何改善，LLM回應想法的優缺點
+3. "organize_proposal": LLM根據目前使用者提出的內容進行提案整理
+4. "score_proposal": 提出完整的提案內容，根據提案內容進行評分和建議
+
+輸出一律用JSON格式
+{"tool": "", "input_word": ""}
+
+範例：
+ex. "創見南方" => {"tool": "find_completion", "input_word": "創見南方"}
+ex. "使用者的痛點是不知道完整的提案架構，浪費了許多時間在不必要的細節，透過這個agent能夠讓他們在正確的架構下討論並思考自己忽略了那些因素" => {"tool": "discuss_proposal", "input_word": "商業模式如果用權利金會比訂閱制好嗎?"}
+ex. "整理提案" => {"tool": "organize_proposal", "input_word": "整理提案"}
+ex. "我想要做一個能夠改善商業競賽的agent，讓參加競賽的使用者能夠完善他們的競賽，能夠幫助他們釐清提案邏輯並整理提案架構" => {"tool": "score_proposal", "input_word": "我想要做一個能夠改善商業競賽的agent，讓參加競賽的使用者能夠完善他們的競賽，能夠幫助他們釐清提案邏輯並整理提案架構"}
+
+使用者訊息:
+
 """
