@@ -3,8 +3,6 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FollowEvent
 from agent import send_message_to_agent
-from dotenv import load_dotenv
-load_dotenv(dotenv_path='../keys.env')
 import os
 
 app = Flask(__name__)

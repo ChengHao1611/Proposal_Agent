@@ -18,7 +18,7 @@ def send_messages_to_LLM(messages: list[dict[str, str]]) -> dict:
     """
     client = Client(
         host="https://api-gateway.netdb.csie.ncku.edu.tw",
-        headers={"Authorization": "Bearer " + str(os.environ.get("OLLAMA_API_KEY"))}
+        headers={"Authorization": "Bearer " + str(os.getenv("OLLAMA_API_KEY"))}
     )
     #str(os.environ.get("OLLAMA_API_KEY"))
 
