@@ -79,8 +79,8 @@ class Tool:
             messages = [{"role": "user", "content": pt.LLM_choose_template + user_message}]
             response = send_messages_to_LLM(messages)
             print(response)
-            #tool = (response["tool"])
-            #input_word = response["input_word"]
+            tool = (response["tool"])
+            input_word = response["input_word"]
             if tool == "find_completion":
                 return Tool.find_completion(user_name, input_word)
             elif tool == "discuss_proposal":
