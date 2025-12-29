@@ -61,6 +61,10 @@ def handle_message(event):
                     event.reply_token,
                     TextSendMessage(text='請先輸入競賽名稱') # 回應訊息
                 )
+                line_bot_api.push_message(
+                    user_id,
+                    TextSendMessage(text='請選擇您想要使用的功能\n1. 輸入競賽名稱\n2. 與LLM討論提案內容\n3. 由LLM整理提案\n4. 輸入提案內容\n')
+                )
                 return
             else:
                 user_state['mode'] = 2
@@ -73,6 +77,10 @@ def handle_message(event):
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text='請先輸入競賽名稱') # 回應訊息
+                )
+                line_bot_api.push_message(
+                    user_id,
+                    TextSendMessage(text='請選擇您想要使用的功能\n1. 輸入競賽名稱\n2. 與LLM討論提案內容\n3. 由LLM整理提案\n4. 輸入提案內容\n')
                 )
                 return
             else:
@@ -96,6 +104,10 @@ def handle_message(event):
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text='請先輸入競賽名稱') # 回應訊息
+                )
+                line_bot_api.push_message(
+                    user_id,
+                    TextSendMessage(text='請選擇您想要使用的功能\n1. 輸入競賽名稱\n2. 與LLM討論提案內容\n3. 由LLM整理提案\n4. 輸入提案內容\n')
                 )
                 return
             else:
