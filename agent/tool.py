@@ -95,7 +95,7 @@ class Tool:
             print(e)
             return "出現莫名錯誤"
 
-        @staticmethod
+    @staticmethod
     def find_completion(user_name: str, user_message: str) -> str:
         try:
             initialize_user_history(user_name)
