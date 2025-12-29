@@ -103,7 +103,7 @@ class Tool:
             logger.warning("find_completion出現問題1")
             #print(f"找到{user_message}競賽")
             get_web_info = search_competition_with_serpapi(user_message)
-            logger.warning("find_completion出現問題2")
+            logger.warning(f"{get_web_info}")
             #print(get_web_info)
             result_message = get_web_info["pages"][0]["text"] + get_web_info["pages"][1]["text"]
             logger.warning("find_completion出現問題3")
