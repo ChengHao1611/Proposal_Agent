@@ -100,14 +100,19 @@ class Tool:
         try:
             initialize_user_history(user_name)
             messages = get_user_message_history(user_name)
+            logger.warning("find_completion出現問題1")
             #print(f"找到{user_message}競賽")
             get_web_info = search_competition_with_serpapi(user_message)
+            logger.warning("find_completion出現問題2")
             #print(get_web_info)
             result_message = get_web_info["pages"][0]["text"] + get_web_info["pages"][1]["text"]
+            logger.warning("find_completion出現問題3")
             #print(result_message)
             set_user_message_history(user_name, "user", result_message)
+            logger.warning("find_completion出現問題5")
             messages.append({"role": "user", "content": f"{result_message} + {pt.completion_info}"})
             response = send_messages_to_LLM(messages)
+            logger.warning("find_completion出現問題6")
             LLM_response = response["reply_to_user"]
             set_user_message_history(user_name, "assistant", LLM_response)
             return LLM_response
