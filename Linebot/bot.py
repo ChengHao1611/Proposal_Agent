@@ -51,6 +51,10 @@ def handle_message(event):
         if user_message == '1': # input competition name
             user_state['mode'] = 1
             user_state['competition_name'] = ''
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='切換到mode 1') # 回應訊息
+            )
         elif user_message == '2': # discuss proposal
             if competition_name == '':
                 line_bot_api.reply_message(
@@ -96,6 +100,10 @@ def handle_message(event):
                 return
             else:
                 user_state['mode'] = 4
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='切換到mode 4') # 回應訊息
+                )
         else:
             line_bot_api.reply_message(
                 event.reply_token,
