@@ -28,6 +28,7 @@ def send_messages_to_LLM(messages: list[dict[str, str]]) -> dict:
         for part in client.chat('gpt-oss:120b', messages=messages, stream=False):
             #print(part)
             if(part[0] == "message"):
+                logging.warning(f"{part}")
                 data = json.loads(part[1]["content"])
                 #print(part)
                 return data
